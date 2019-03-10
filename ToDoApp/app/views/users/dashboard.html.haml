@@ -1,0 +1,25 @@
+%h1 Dashboard
+= link_to "Show Charts", new_developer_path, class: 'btn btn-success'
+%br
+%br
+%h3 Search Deveplers
+= form_for(:users, url: developers_path, :method => "get", id: "search-form") do
+  = text_field_tag :search, params[:search], placeholder: "Search developer"
+  = submit_tag "Search", name: nil
+- unless @developers.present?
+  .alert.alert-warning
+    There are no Devepolers matching '#{params[:search]}'
+- else
+  %table.table.table-blue
+    %th Status
+    - @developers.each do |developer|
+      %th= developer.name
+    - @developers.each do |developer|
+      %tr
+        %td= link_to(developer.name, developer_path(developer))
+        / %td= actor.movies.length
+        / %td= link_to 'Delete', actor_path(actor),  |
+        /     method: :delete,                    |
+        /     data: { confirm: 'Are you sure?' }, |
+        /     class: "btn btn-danger"             |
+        / %td= link_to 'Edit', edit_actor_path(actor), class: 'btn btn-warning'
