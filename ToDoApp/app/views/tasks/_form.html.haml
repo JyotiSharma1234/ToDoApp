@@ -1,0 +1,33 @@
+= f.label :name
+%br/
+= f.text_field :name, autocomplete: "name"
+%br/
+= f.label :description
+%br/
+= f.text_area :description
+%br/
+%br/
+= f.label :start_date
+%br/
+= f.date_field :start_date
+%br/
+= f.label :project
+%br/
+%select{ :name => "project_id" }
+  - @projects.each do |project|
+    %option{:value => project.id}= project.name
+
+
+%br/
+= f.label :assign_developer
+%br/
+%select{ :name => "developer_id" }
+  - @developers.each do |developer|
+    %option{:value => developer.id}= developer.name
+%br/
+
+%br/
+%br/
+.actions
+= f.submit "Add", class: "btn btn-success"
+= link_to "Cancel", :back, {:class=>"btn btn-default"}
