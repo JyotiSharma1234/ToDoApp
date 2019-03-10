@@ -1,0 +1,37 @@
+%h1 Developers
+= link_to "Add new Devepoler", new_developer_path, class: 'btn btn-success'
+%br
+%br
+%h3 Search Deveplers
+= form_for(:users, url: developers_path, :method => "get", id: "search-form") do
+  = text_field_tag :search, params[:search], placeholder: "Search developer"
+  = submit_tag "Search", name: nil
+- unless @developers.present?
+  .alert.alert-warning
+    - if (params[:search])
+      There are no Developers matching '#{params[:search]}'
+    - else
+      There are no Developers
+- else
+  - i = 1
+  %table.table.table-blue
+    %th SR. no.
+    %th Name
+    %th Address
+    %th Email
+    %th Delete
+    %th Update
+    - @developers.each do |developer|
+      %tr
+        %td= i
+        %td= link_to(developer.name, developer_path(developer))
+        %td= developer.address
+        %td= developer.email
+        %td= link_to 'Delete', developer_path(developer),  |
+            method: :delete,                    |
+            data: { confirm: 'Are you sure?' }, |
+            class: "btn btn-danger"             |
+        %td= link_to 'Edit', edit_developer_path(developer), class: 'btn btn-warning'
+        
+        - i=i+1
+        / %td= actor.movies.length
