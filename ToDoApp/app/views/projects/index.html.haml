@@ -1,0 +1,43 @@
+%h1 Projects
+= link_to "Add new Project", new_project_path, class: 'btn btn-success'
+%br
+%br
+%h3 Search Projects
+= form_for(:projects, url: projects_path, :method => "get", id: "search-form") do
+  = text_field_tag :search, params[:search], placeholder: "Search project"
+  = submit_tag "Search", name: nil
+- unless @projects.present?
+  .alert.alert-warning
+    - if (params[:search])
+      There are no Projects matching '#{params[:search]}'
+    - else
+      There are no Projects
+- else
+  - i = 1
+  %table.table.table-blue
+    %th SR. no.
+    %th Name
+    %th Start Date
+    %th End Date
+    %th Technology
+    %th #Tasks
+    %th #Developers
+    %th Delete
+    %th Update
+    - @projects.each do |project|
+      %tr
+        %td= i
+        %td= link_to(project.name, project_path(project))
+        %td= project.start_date
+        %td= project.end_date
+        %td= project.technology
+        %td= project.tasks.count
+        %td= project.developer_count
+        %td= link_to 'Delete', project_path(project),  |
+            method: :delete,                    |
+            data: { confirm: 'Are you sure?' }, |
+            class: "btn btn-danger"             |
+        %td= link_to 'Edit', edit_project_path(project), class: 'btn btn-warning'
+        
+        - i=i+1
+        / %td= actor.movies.length

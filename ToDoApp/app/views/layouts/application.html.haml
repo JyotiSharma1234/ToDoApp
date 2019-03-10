@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title ToDoApp
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    %p.notice= notice
+    %p.alert= alert
+    %h3
+      %u
+        %b
+          Welcome
+          = @current_user&.name
+    .container
+      .btn-group
+        = link_to 'Home', authenticated_root_path, class: 'btn btn-primary'
+        = link_to 'Developers', developers_path, class: 'btn btn-primary' if @current_user.present? && @current_user.is_admin?
+        = link_to 'Projects', projects_path, class: 'btn btn-primary' if @current_user.present? && @current_user.is_admin?
+        = link_to 'Tasks', tasks_path, class: 'btn btn-primary' if @current_user.present? && @current_user.projects.present?
+        = link_to 'Add Project', new_project_path, class: 'btn btn-primary' if @current_user.present? && @current_user.is_admin?
+        = link_to 'Add Tasks', new_task_path, class: 'btn btn-primary' if @current_user.present? && @current_user.is_admin?
+        = link_to 'Edit', edit_user_registration_path, method: :get, class: 'btn btn-primary' if @current_user.present?
+        = link_to "Logout #{@current_user.name} ", destroy_user_session_path, method: :delete, class: 'btn btn-danger float-right' if @current_user.present?
+    .container
+    .jumbotron
+      = yield

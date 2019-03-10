@@ -1,0 +1,57 @@
+%h1 Tasks
+= link_to "Add new task", new_task_path, class: 'btn btn-success'
+%br
+%br
+%h3 Search Tasks
+= form_for(:tasks, url: tasks_path, :method => "get", id: "search-form") do
+  = text_field_tag :search, params[:search], placeholder: "Search task"
+  = submit_tag "Search", name: nil
+- unless @tasks.present?
+  .alert.alert-warning
+    - if (params[:search])
+      There are no tasks matching '#{params[:search]}'
+    - else
+      There are no tasks
+- else
+  - i = 1
+  %table.table.table-blue
+    %th SR. no.
+    %th Name
+    %th Project
+    - if @current_user.is_admin?
+      %th Assigned To
+    %th Start Date
+    %th End Date
+    %th Description
+    %th Current Status
+    -if @current_user.is_admin?
+      %th Delete
+      %th Update
+    - else
+      %th Action
+    - @tasks.each do |task|
+      %tr
+        %td= i
+        %td= link_to(task.name, task_path(task))
+        %td= task.project.name
+        - if @current_user.is_admin?
+          %td= task.developer.name
+        %td= task.start_date
+        %td= task.end_date
+        %td= task.description
+        %td= task.status.capitalize
+        - if @current_user.is_admin?
+          %td= link_to 'Delete', task_path(task),  |
+            method: :delete,                    |
+            data: { confirm: 'Are you sure?' }, |
+            class: "btn btn-danger"             |
+          %td= link_to 'Edit', edit_task_path(task), class: 'btn btn-warning'
+        - else
+          - if(task.status.capitalize == 'New')
+            %td= link_to 'Satrt', task_start_path(task), class: 'btn btn-success'
+          - elsif(task.status.capitalize == 'Inprogress')
+            %td= link_to 'Finish', task_finish_path(task), class: 'btn btn-danger'
+          - else
+            %td= 'DONE'
+        - i=i+1
+        / %td= actor.movies.length
