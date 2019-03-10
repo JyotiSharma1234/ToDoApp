@@ -1,0 +1,16 @@
+= f.label :name
+%br/
+= f.text_field :name, autocomplete: "name", required: true
+%br/
+= f.label :technology
+%br/
+= f.text_field :technology, required: true
+%br/
+= f.label :start_date
+%br/
+= f.date_field :start_date
+%br/
+%br/
+.actions
+= f.submit "Add", class: "btn btn-success"
+= link_to "Cancel", :back, {:class=>"btn btn-default"}
