@@ -17,9 +17,3 @@
     - @developers.each do |developer|
       %tr
         %td= link_to(developer.name, developer_path(developer))
-        / %td= actor.movies.length
-        / %td= link_to 'Delete', actor_path(actor),  |
-        /     method: :delete,                    |
-        /     data: { confirm: 'Are you sure?' }, |
-        /     class: "btn btn-danger"             |
-        / %td= link_to 'Edit', edit_actor_path(actor), class: 'btn btn-warning'
