@@ -1,25 +1,39 @@
+:javascript
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+      var chart_div = document.getElementById('chart_div');
+      var new_tasks_count = parseInt(chart_div.dataset.new)
+      var in_progress_tasks_count = parseInt(chart_div.dataset.inprogress)
+      var done_tasks_count = parseInt(chart_div.dataset.done)
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        debugger
+        data.addRows([
+          ['New', new_tasks_count],
+          ['In progress', in_progress_tasks_count],
+          ['Done', done_tasks_count]
+        ]);
+
+        // Set chart options
+        var options = {'title':'Tasks Status',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(chart_div);
+        chart.draw(data, options);
+      }
+
 %h1 Dashboard
-= link_to "Show Charts", new_developer_path, class: 'btn btn-success'
+#chart_div{:data => {:new => @new_tasks_count, :inprogress => @in_progress_tasks_count, :done => @done_tasks_count}}
 %br
-%br
-%h3 Search Deveplers
-= form_for(:users, url: developers_path, :method => "get", id: "search-form") do
-  = text_field_tag :search, params[:search], placeholder: "Search developer"
-  = submit_tag "Search", name: nil
-- unless @developers.present?
-  .alert.alert-warning
-    There are no Devepolers matching '#{params[:search]}'
-- else
-  %table.table.table-blue
-    %th Status
-    - @developers.each do |developer|
-      %th= developer.name
-    - @developers.each do |developer|
-      %tr
-        %td= link_to(developer.name, developer_path(developer))
-        / %td= actor.movies.length
-        / %td= link_to 'Delete', actor_path(actor),  |
-        /     method: :delete,                    |
-        /     data: { confirm: 'Are you sure?' }, |
-        /     class: "btn btn-danger"             |
-        / %td= link_to 'Edit', edit_actor_path(actor), class: 'btn btn-warning'
