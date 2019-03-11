@@ -6,18 +6,15 @@ class UsersController < ApplicationController
 
   def dashboard
     @current_user = current_user
-    if current_user.is_admin?
-      @developers = params[:search].blank? ? Developer.all : Developer.search(params[:search])
-    else
-      @projects = params[:search].blank? ? current_user.projects.all : current_user.projects.search(params[:search])
-    end
-    project_ids = projects.pluck(:id)
+    @developers = Developer.all if current_user.is_admin?
+    @projects = get_projects
+    project_ids = @projects.pluck(:id)
     @new_tasks_count = Task.where(project_id: project_ids, status: 'new').count
     @in_progress_tasks_count = Task.where(project_id: project_ids, status: 'InProgress').count
     @done_tasks_count = Task.where(project_id: project_ids, status: 'Done').count
   end
 
-  def projects
+  def get_projects
     current_user.is_admin? ? Admin.find(current_user.id).projects : Developer.find(current_user.id).projects
   end
 end
