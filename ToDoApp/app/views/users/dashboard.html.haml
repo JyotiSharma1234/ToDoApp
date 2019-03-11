@@ -38,3 +38,39 @@
   %h5 Task Chart (won't be displayed unless connected to internet)
   #chart_div{:data => {:new => @new_tasks_count, :inprogress => @in_progress_tasks_count, :done => @done_tasks_count}}
 %br
+- if current_user.is_admin?
+  %table.table.table-blue
+    %th Status
+    - @developers.each do |developer|
+      %th= developer.name
+    %tr
+      %td NEW
+      - @developers.each do |developer|
+        %td= developer.new_tasks.pluck(:name)
+    %tr
+      %td IN PROGRESS
+      - @developers.each do |developer|
+        %td= developer.in_progress_tasks.pluck(:name)
+
+    %tr
+      %td DONE
+      - @developers.each do |developer|
+        %td= developer.done_tasks.pluck(:name)
+- else
+  %table.table.table-blue
+    %th Status
+    - @projects.each do |project|
+      %th= project.name
+    %tr
+      %td NEW
+      - @projects.each do |project|
+        %td= project.new_tasks.pluck(:name)
+    %tr
+      %td IN PROGRESS
+      - @projects.each do |project|
+        %td= project.in_progress_tasks.pluck(:name)
+
+    %tr
+      %td DONE
+      - @projects.each do |project|
+        %td= project.done_tasks.pluck(:name)
