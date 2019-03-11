@@ -1,38 +1,40 @@
 :javascript
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-      var chart_div = document.getElementById('chart_div');
-      var new_tasks_count = parseInt(chart_div.dataset.new)
-      var in_progress_tasks_count = parseInt(chart_div.dataset.inprogress)
-      var done_tasks_count = parseInt(chart_div.dataset.done)
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['New', new_tasks_count],
-          ['In progress', in_progress_tasks_count],
-          ['Done', done_tasks_count]
-        ]);
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+  var chart_div = document.getElementById('chart_div');
+  var new_tasks_count = parseInt(chart_div.dataset.new)
+  var in_progress_tasks_count = parseInt(chart_div.dataset.inprogress)
+  var done_tasks_count = parseInt(chart_div.dataset.done)
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Topping');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+      ['New', new_tasks_count],
+      ['In progress', in_progress_tasks_count],
+      ['Done', done_tasks_count]
+    ]);
 
-        // Set chart options
-        var options = {'title':'Tasks Status',
-                       'width':400,
-                       'height':300};
+    // Set chart options
+    var options = {'title':'Tasks Status',
+                   'width':400,
+                   'height':300};
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(chart_div);
-        chart.draw(data, options);
-      }
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(chart_div);
+    chart.draw(data, options);
+  }
 
 %h1 Dashboard
-#chart_div{:data => {:new => @new_tasks_count, :inprogress => @in_progress_tasks_count, :done => @done_tasks_count}}
+%center
+  %h5 Task Chart (won't be displayed unless connected to internet)
+  #chart_div{:data => {:new => @new_tasks_count, :inprogress => @in_progress_tasks_count, :done => @done_tasks_count}}
 %br
