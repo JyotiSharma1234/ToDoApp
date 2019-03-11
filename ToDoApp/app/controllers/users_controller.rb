@@ -11,6 +11,10 @@ class UsersController < ApplicationController
     else
       @projects = params[:search].blank? ? current_user.projects.all : current_user.projects.search(params[:search])
     end
+    project_ids = projects.pluck(:id)
+    @new_tasks_count = Task.where(project_id: project_ids, status: 'new').count
+    @in_progress_tasks_count = Task.where(project_id: project_ids, status: 'InProgress').count
+    @done_tasks_count = Task.where(project_id: project_ids, status: 'Done').count
   end
 
   def projects
